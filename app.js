@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
   res.send('App is running');
 });
 
-const transactionsRouter = require('./routes/transactions');
+const transactionsRouter = require('./routes/transactions.router');
 app.use('/api/v1/transactions', transactionsRouter);
 
 app.listen(PORT, () => console.log('Server started on port ' + PORT));
