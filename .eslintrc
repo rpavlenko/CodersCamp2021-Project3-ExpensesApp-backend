@@ -1,0 +1,14 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "rules": {
+    "semi": ["error", "always"],
+    "react/react-in-jsx-scope": "off"
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  }
+}
