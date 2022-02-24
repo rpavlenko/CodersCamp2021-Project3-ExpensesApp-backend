@@ -10,7 +10,7 @@ const UserSchema = mongoose.Schema({
     required: true
   },
   categoriesID: {
-    type: Array
+    type: [mongoose.SchemaTypes.ObjectId]
   },
   isActive: {
     type: Boolean,
