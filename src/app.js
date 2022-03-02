@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const PORT = process.env.PORT || 3000;
+const CategoriesRouter = require('./routes/categories.router');
 
 mongoose.connect(process.env.DATABASE_URL, () =>
   console.log('Connected to database'),
@@ -19,5 +20,6 @@ app.get('/', (req, res) => {
 
 const transactionsRouter = require('./routes/transactions.router');
 app.use('/api/v1/transactions', transactionsRouter);
+app.use('/api/v1/categories', CategoriesRouter);
 
 app.listen(PORT, () => console.log('Server started on port ' + PORT));
