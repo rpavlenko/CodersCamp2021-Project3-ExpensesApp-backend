@@ -1,25 +1,30 @@
 const mongoose = require('mongoose');
 
 const TransactionsSchema = mongoose.Schema({
-  userID: {
-    type: mongoose.SchemaTypes.ObjectId,
-    required: true
-  },
-  categoryID: {
-    type: mongoose.SchemaTypes.ObjectId
-  },
-  name: {
+  // userID: {
+  //   type: mongoose.SchemaTypes.ObjectId,
+  //   required: true,
+  // },
+  category: {
     type: String,
-    required: true
+    required: true,
   },
-  amout: {
+  title: {
+    type: String,
+    required: true,
+  },
+  amount: {
     type: Number,
-    required: true
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
   },
   date: {
     type: Date,
-    required: true
-  }
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('Transactions', TransactionsSchema);
