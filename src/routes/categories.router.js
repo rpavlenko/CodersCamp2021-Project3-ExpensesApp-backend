@@ -1,29 +1,24 @@
 const express = require('express');
-const router = express.Router();
+const router = new express.Router();
+const {
+  getCategories,
+  getCategory,
+  addCategory,
+  removeCategory,
+  updateCategory,
+} = require('../controllers/categories.controllers');
 
 // GET
-router.get('/categories', (req, res) => {
-  res.send('get categories');
-});
+router.get('/', getCategories);
+router.get('/:id', getCategory);
 
-// POST
-router.post('/categories', (req, res) => {
-  res.send('post categories');
-});
+// // POST
+router.post('/', addCategory);
 
-// GET
-router.get('/categories/:id', (req, res) => {
-  res.send('get cat id');
-});
+// // DELETE
+router.delete('/:id', removeCategory);
 
-// DELETE
-router.delete('/categories/:id', (req, res) => {
-  res.send('delete cat id');
-});
-
-// PATCH
-router.patch('/categories/:id', (req, res) => {
-  res.send('update cat id');
-});
+// // PATCH
+router.patch('/:id', updateCategory);
 
 module.exports = router;
