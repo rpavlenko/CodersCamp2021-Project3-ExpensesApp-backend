@@ -5,34 +5,39 @@ const Users = require('../models/User');
 
 const loginUser = async (req, res) => {
   const userExist = await Users.findOne({ email: req.body.email });
-  if(userExist && userExist.isActive){
-    const passwordValidation = await bcrypt.compare(req.body.password, userExist.password);
-    if(passwordValidation) res.status(200).send({ code: 1 });
+  if (userExist && userExist.isActive) {
+    const passwordValidation = await bcrypt.compare(
+      req.body.password,
+      userExist.password,
+    );
+    if (passwordValidation) res.status(200).send({ code: 1 });
     else res.status(400).send({ code: 0 });
-  }else res.status(400).send({ code: 0 });
+  } else res.status(400).send({ code: 0 });
 };
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  service: 'gmail',
   auth: {
     user: process.env.AUTH_EMAIL,
-    pass: process.env.AUTH_PASS
-  }
+    pass: process.env.AUTH_PASS,
+  },
 });
 
 transporter.verify((err, success) => {
-  if(err) console.log(err);
+  if (err) console.log(err);
   else console.log('ready for messages', success);
 });
 
-const verifyEmail = ({_id, email}, res) => {
-  const url = "http://localhost:3000/";
+const verifyEmail = ({ _id, email }, res) => {
+  const url = 'http://localhost:3000/';
 
   const mailOption = {
     from: process.env.AUTH_EMAIL,
     to: email,
-    subject: "Email verification",
-    html: `<p>Verify your email to complete the signup.</p><p>Click <a href=${url + 'verify/' + _id}>here</a>.</p>`
+    subject: 'Email verification',
+    html: `<p>Verify your email to complete the signup.</p><p>Click <a href=${
+      url + 'verify/' + _id
+    }>here</a>.</p>`,
   };
 
   transporter.sendMail(mailOption);
@@ -40,34 +45,78 @@ const verifyEmail = ({_id, email}, res) => {
 
 const activeUser = async (req, res) => {
   const userExist = await Users.findById(req.body.userID);
-  if(userExist){
-    await Users.findByIdAndUpdate(req.body.userID, {'isActive': true});
+  if (userExist) {
+    await Users.findByIdAndUpdate(req.body.userID, { isActive: true });
     res.status(200).send({ code: 1 });
-  }
-  else res.status(400).send({ code: 0 }); 
+  } else res.status(400).send({ code: 0 });
 };
 
 const registerUser = async (req, res) => {
   const userExist = await Users.findOne({ email: req.body.email });
-  if(userExist) res.status(409).send({ code: 0 });
+  if (userExist) res.status(409).send({ code: 0 });
   else {
     const userData = {
       ...req.body,
       isActive: false,
-      createdAt: Date()
+      createdAt: Date(),
     };
     const user = new Users(userData);
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
-    await user.save().then(result => {
+    await user.save().then((result) => {
       verifyEmail(result, res);
     });
     res.status(200).send({ code: 1 });
   }
 };
 
+const sendResetPasswordEmail = ({ _id, email }, res) => {
+  const url = 'http://localhost:3000/';
+
+  const mailOption = {
+    from: process.env.AUTH_EMAIL,
+    to: email,
+    subject: 'Password reset',
+    html: `<p>Click to reset password</p><p>Click <a href=${
+      url + 'reset-password/' + _id
+    }>here</a>.</p>`,
+  };
+
+  transporter.sendMail(mailOption);
+};
+
+const resetPassword = async (req, res) => {
+  const email = req.body.email;
+  const userExist = await Users.findOne({ email });
+
+  if (userExist && userExist.isActive) {
+    const user = {
+      _id: userExist._id,
+      email: email,
+    };
+
+    await sendResetPasswordEmail(user, res);
+    res.status(200).send({ code: 1 });
+  } else {
+    res.status(400).send({ code: 0 });
+  }
+};
+
+const resetPasswordById = async (req, res) => {
+  const user = await Users.findById(req.params.id);
+  if (!user) return res.status(400).send('invalid link or expired');
+
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(req.body.password, salt);
+
+  await user.save();
+  res.status(200).send('password reset sucessfully.');
+};
+
 module.exports = {
   loginUser,
   registerUser,
-  activeUser
+  activeUser,
+  resetPassword,
+  resetPasswordById,
 };
