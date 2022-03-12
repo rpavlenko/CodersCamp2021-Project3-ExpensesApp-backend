@@ -4,6 +4,9 @@ const app = express();
 const mongoose = require('mongoose');
 const PORT = process.env.PORT || 3000;
 const CategoriesRouter = require('./routes/categories.router');
+const cors = require('cors');
+
+app.use(cors());
 
 mongoose.connect(process.env.DATABASE_URL, () =>
   console.log('Connected to database'),
