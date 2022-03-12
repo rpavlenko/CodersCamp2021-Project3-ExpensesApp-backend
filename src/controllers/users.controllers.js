@@ -3,6 +3,8 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 const Users = require('../models/User');
 
+const ObjectId = require('mongoose').Types.ObjectId;
+
 const loginUser = async (req, res) => {
   const userExist = await Users.findOne({ email: req.body.email });
   if (userExist && userExist.isActive) {
@@ -43,7 +45,16 @@ const verifyEmail = ({ _id, email }, res) => {
   transporter.sendMail(mailOption);
 };
 
+const isValidObjectId = (id) => {
+  if(ObjectId.isValid(id)){
+    if((String)(new ObjectId(id)) === id) return true;
+    else return false;
+  } else return false;
+};
+
 const activeUser = async (req, res) => {
+  if(!isValidObjectId(req.body.userID)) return res.status(400).send({ code: 0 });
+  
   const userExist = await Users.findById(req.body.userID);
   if (userExist) {
     await Users.findByIdAndUpdate(req.body.userID, { isActive: true });
