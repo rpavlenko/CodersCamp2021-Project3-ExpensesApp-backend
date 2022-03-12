@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require('mongoose');
 const PORT = process.env.PORT || 3000;
 const CategoriesRouter = require('./routes/categories.router');
+const { authToken } = require('./middleware/auth');
 
 mongoose.connect(process.env.DATABASE_URL, () =>
   console.log('Connected to database'),
@@ -19,8 +20,8 @@ app.get('/', (req, res) => {
 });
 
 const transactionsRouter = require('./routes/transactions.router');
-app.use('/api/v1/transactions', transactionsRouter);
-app.use('/api/v1/categories', CategoriesRouter);
+app.use('/api/v1/transactions', authToken, transactionsRouter);
+app.use('/api/v1/categories', authToken, CategoriesRouter);
 
 const usersRouter = require('./routes/users.router');
 app.use('/api/v1/users', usersRouter);
