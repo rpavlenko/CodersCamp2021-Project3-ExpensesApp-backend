@@ -25,4 +25,7 @@ app.use('/api/v1/categories', CategoriesRouter);
 const usersRouter = require('./routes/users.router');
 app.use('/api/v1/users', usersRouter);
 
+const balanceRouter = require('./routes/balance.router');
+app.use('/api/v1/balance', balanceRouter);
+
 app.listen(PORT, () => console.log('Server started on port ' + PORT));
