@@ -29,3 +29,5 @@ const balanceRouter = require('./routes/balance.router');
 app.use('/api/v1/balance', balanceRouter);
 
 app.listen(PORT, () => console.log('Server started on port ' + PORT));
+
+

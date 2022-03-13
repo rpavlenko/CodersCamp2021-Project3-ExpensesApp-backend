@@ -7,7 +7,7 @@ const getBalance = async (req, res) => {
     const amounts = transactions.map(transaction => transaction.amount);
     const total = amounts.reduce((acc, item) => (acc += item), 0);
     res.json(total);
-  } catch (err) { comm
+  } catch (err) 
     res.json({ message: err });
   }
 };
