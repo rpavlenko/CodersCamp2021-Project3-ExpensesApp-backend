@@ -131,12 +131,21 @@ const updatePassword = async (req, res) => {
   });
   if (!user) return res.status(400).send('User not exists');
 
-  const isSamePassword = await bcrypt.compare(req.body.password, user.password);
-  console.log(isSamePassword);
+  const isSamePassword = await bcrypt.compare(
+    req.body.newPassword,
+    user.password,
+  );
 
-  if (!isSamePassword) {
+  const isCurrentPasswordCorrect = await bcrypt.compare(
+    req.body.currentPassword,
+    user.password,
+  );
+
+  if (!isCurrentPasswordCorrect) {
+    res.status(400).send('Enter correct password');
+  } else if (!isSamePassword) {
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(req.body.password, salt);
+    user.password = await bcrypt.hash(req.body.newPassword, salt);
 
     await user.save();
     res.status(200).send('Password changed sucessfully.');

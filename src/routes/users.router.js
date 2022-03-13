@@ -12,8 +12,8 @@ const {
 router.post('/login', loginUser);
 router.post('/register', registerUser);
 router.post('/verify', activeUser);
+router.patch('/', updatePassword);
 router.post('/reset-password', resetPassword);
-router.patch('/reset-password', updatePassword);
 router.post('/reset-password/:id', resetPasswordById);
 
 module.exports = router;
