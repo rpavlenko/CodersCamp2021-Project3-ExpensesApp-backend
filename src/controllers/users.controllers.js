@@ -46,15 +46,16 @@ const verifyEmail = ({ _id, email }, res) => {
 };
 
 const isValidObjectId = (id) => {
-  if(ObjectId.isValid(id)){
-    if((String)(new ObjectId(id)) === id) return true;
+  if (ObjectId.isValid(id)) {
+    if (String(new ObjectId(id)) === id) return true;
     else return false;
   } else return false;
 };
 
 const activeUser = async (req, res) => {
-  if(!isValidObjectId(req.body.userID)) return res.status(400).send({ code: 0 });
-  
+  if (!isValidObjectId(req.body.userID))
+    return res.status(400).send({ code: 0 });
+
   const userExist = await Users.findById(req.body.userID);
   if (userExist) {
     await Users.findByIdAndUpdate(req.body.userID, { isActive: true });
@@ -115,13 +116,35 @@ const resetPassword = async (req, res) => {
 
 const resetPasswordById = async (req, res) => {
   const user = await Users.findById(req.params.id);
-  if (!user) return res.status(400).send('invalid link or expired');
+  if (!user) return res.status(400).send('Invalid link or expired');
 
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(req.body.password, salt);
 
   await user.save();
-  res.status(200).send('password reset sucessfully.');
+  res.status(200).send('Password reset sucessfully.');
+};
+
+const updatePassword = async (req, res) => {
+  const user = await Users.findById({
+    _id: req.body.userID,
+  });
+  if (!user) return res.status(400).send('User not exists');
+
+  const isSamePassword = await bcrypt.compare(req.body.password, user.password);
+  console.log(isSamePassword);
+
+  if (!isSamePassword) {
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(req.body.password, salt);
+
+    await user.save();
+    res.status(200).send('Password changed sucessfully.');
+  } else {
+    res
+      .status(400)
+      .send('It seems you have entered same password as old password');
+  }
 };
 
 module.exports = {
@@ -130,4 +153,5 @@ module.exports = {
   activeUser,
   resetPassword,
   resetPasswordById,
+  updatePassword,
 };
