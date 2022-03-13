@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 });
 
 const transactionsRouter = require('./routes/transactions.router');
-app.use('/api/v1/transactions', transactionsRouter);
+app.use('/', transactionsRouter);
 app.use('/api/v1/categories', CategoriesRouter);
 
 const usersRouter = require('./routes/users.router');
