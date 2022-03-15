@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 const PORT = process.env.PORT || 3000;
 const CategoriesRouter = require('./routes/categories.router');
 const { authToken } = require('./middleware/auth');
+const cors = require('cors');
+
+app.use(cors());
 
 mongoose.connect(process.env.DATABASE_URL, () =>
   console.log('Connected to database'),
@@ -25,5 +28,8 @@ app.use('/api/v1/categories', authToken, CategoriesRouter);
 
 const usersRouter = require('./routes/users.router');
 app.use('/api/v1/users', usersRouter);
+
+const balanceRouter = require('./routes/balance.router');
+app.use('/api/v1/balance', balanceRouter);
 
 app.listen(PORT, () => console.log('Server started on port ' + PORT));
