@@ -1,4 +1,5 @@
 const Categories = require('../models/Categories');
+const sendErrorResponse = require('../utils/helpers').sendErrorResponse;
 
 const getCategories = async (req, res) => {
   console.log('get categories');
@@ -24,7 +25,7 @@ const addCategory = async (req, res) => {
     await newCategory.save();
     res.status(201).json(newCategory);
   } catch (error) {
-    res.status(400).json({ message: error });
+    sendErrorResponse(res, error);
   }
 };
 
@@ -36,8 +37,7 @@ const removeCategory = async (req, res) => {
     }
     return res.status(200).json({ message: 'category deleted' });
   } catch (error) {
-    res.status(400).end();
-    res.json({ message: error });
+    sendErrorResponse(res, error);
   }
 };
 
@@ -50,8 +50,7 @@ const updateCategory = async (req, res) => {
     );
     res.status(200).json(updatedCategory);
   } catch (error) {
-    res.status(400).end();
-    res.json({ message: error });
+    sendErrorResponse(res, error);
   }
 };
 
