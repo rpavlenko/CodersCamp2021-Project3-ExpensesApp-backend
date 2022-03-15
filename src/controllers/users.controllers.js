@@ -11,10 +11,10 @@ const loginUser = async (req, res) => {
       req.body.password,
       userExist.password,
     );
-    const jwtToken = jwt.sign({ id: userExist._id }, process.env.JWT_SECRET);
-    if (passwordValidation)
+    if (passwordValidation) {
+      const jwtToken = jwt.sign({ id: userExist._id }, process.env.JWT_SECRET);
       res.status(200).send({ code: 1, userExist, token: jwtToken });
-    else res.status(400).send({ code: 0 });
+    } else res.status(400).send({ code: 0 });
   } else res.status(400).send({ code: 0 });
 };
 
