@@ -131,17 +131,19 @@ const updatePassword = async (req, res) => {
   });
   if (!user) return res.status(400).send('User not exists');
 
-  const isSamePassword = await bcrypt.compare(
-    req.body.newPassword,
-    user.password,
-  );
+  let isSamePassword, isCurrentPasswordCorrect;
+  if (req.body.newPassword) {
+    isSamePassword = await bcrypt.compare(req.body.newPassword, user.password);
+  }
 
-  const isCurrentPasswordCorrect = await bcrypt.compare(
-    req.body.currentPassword,
-    user.password,
-  );
+  if (req.body.currentPassword) {
+    isCurrentPasswordCorrect = await bcrypt.compare(
+      req.body.currentPassword,
+      user.password,
+    );
+  }
 
-  if (!isCurrentPasswordCorrect) {
+  if (!isCurrentPasswordCorrect && isSamePassword) {
     res.status(400).send('Enter correct password');
   } else if (!isSamePassword) {
     const salt = await bcrypt.genSalt(10);
