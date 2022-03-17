@@ -5,8 +5,8 @@ const TransactionsSchema = mongoose.Schema({
   //   type: mongoose.SchemaTypes.ObjectId,
   //   required: true,
   // },
-  categoryID: {
-    type: mongoose.SchemaTypes.ObjectId,
+  category: {
+    type: String,
     required: true,
   },
   title: {
