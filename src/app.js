@@ -18,16 +18,11 @@ app.get('/', (req, res) => {
   res.send('App is running');
 });
 
-const transactionsRouter = require('./routes/transactions.router');
-app.use('/', transactionsRouter);
-app.use('/api/v1/categories', CategoriesRouter);
+const router = require('./routes/router');
+app.use('/', router);
 
-const usersRouter = require('./routes/users.router');
-app.use('/api/v1/users', usersRouter);
 
-const balanceRouter = require('./routes/balance.router');
-app.use('/api/v1/balance', balanceRouter);
+app.listen(PORT);
 
-app.listen(PORT, () => console.log('Server started on port ' + PORT));
-
+module.exports = router;
 
