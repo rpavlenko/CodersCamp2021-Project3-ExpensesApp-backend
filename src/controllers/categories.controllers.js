@@ -20,8 +20,9 @@ const getCategory = async (req, res) => {
 };
 
 const addCategory = async (req, res) => {
+  console.log('add category', req.user.id);
   try {
-    const newCategory = new Categories(req.body);
+    const newCategory = new Categories({ ...req.body, user: req.user.id });
     await newCategory.save();
     res.status(201).json(newCategory);
   } catch (error) {
