@@ -5,9 +5,22 @@ const getBalance = async (req, res) => {
   const userId = req.userId;
   try {
     const transactions = await Transactions.find({ userID: userId });
-    const amounts = transactions.map((transaction) => transaction.amount);
-    const total = amounts.reduce((acc, item) => (acc += item), 0);
-    res.json(total);
+
+    const expenses = transactions
+      .filter((item) => item.type === 'Wydatek')
+      .reduce((acc, item) => (acc += +item.amount), 0);
+
+    const incomes = transactions
+      .filter((item) => item.type === 'Przychód')
+      .reduce((acc, item) => (acc += +item.amount), 0);
+
+    const total = incomes - expenses;
+
+    res.json({
+      total: total,
+      incomes: incomes,
+      expenses: expenses,
+    });
   } catch (error) {
     sendErrorResponse(res, error);
   }
