@@ -122,6 +122,9 @@ const resetPassword = async (req, res) => {
 };
 
 const resetPasswordById = async (req, res) => {
+  if (!isValidObjectId(req.body.userID))
+    return res.status(400).send({ code: 0 });
+
   const user = await Users.findById(req.params.id);
   if (!user) return res.status(400).send('Invalid link or expired');
 
@@ -133,9 +136,10 @@ const resetPasswordById = async (req, res) => {
 };
 
 const updatePassword = async (req, res) => {
-  const user = await Users.findById({
-    _id: req.body.userID,
-  });
+  if (!isValidObjectId(req.body.userID))
+    return res.status(400).send({ code: 0 });
+
+  const user = await Users.findById(req.body.userID);
   if (!user) return res.status(400).send('User not exists');
 
   let isSamePassword, isCurrentPasswordCorrect;
@@ -151,13 +155,13 @@ const updatePassword = async (req, res) => {
   }
 
   if (!isCurrentPasswordCorrect && isSamePassword) {
-    res.status(400).send('Enter correct password');
+    res.status(400).send({ code: 0, msg: 'Enter correct password'});
   } else if (!isSamePassword) {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(req.body.newPassword, salt);
 
     await user.save();
-    res.status(200).send('Password changed sucessfully.');
+    res.status(200).send({ code: 1, msg: 'Password changed sucessfully.'});
   } else {
     res
       .status(400)
