@@ -2,7 +2,7 @@ const dotenv = require('dotenv').config();
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 const CategoriesRouter = require('./routes/categories.router');
 const { authToken } = require('./middleware/auth');
 const cors = require('cors');
@@ -10,7 +10,7 @@ const cors = require('cors');
 app.use(cors());
 
 mongoose.connect(process.env.DATABASE_URL, () =>
-  console.log(`Connected to database at port ${PORT}`),
+  console.log(`Connected to database`),
 );
 const db = mongoose.connection;
 
