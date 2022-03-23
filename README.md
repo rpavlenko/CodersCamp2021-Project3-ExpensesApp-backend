@@ -4,7 +4,7 @@
 
 ## Application Demo
 
-If you are curious about the results of our work just try our application :arrow_right: [Scrooge App](link).
+Here you an check demo of our Application: [Scrooge App](https://expenses-app-frontend-63b9u.ondigitalocean.app/).
 
 &nbsp;
 
