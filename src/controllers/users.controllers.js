@@ -15,6 +15,7 @@ const loginUser = async (req, res) => {
     );
     if (passwordValidation) {
       const jwtToken = jwt.sign({ id: userExist._id }, process.env.JWT_SECRET);
+      console.log(jwtToken);
       res.status(200).send({ code: 1, userExist, token: jwtToken });
     } else res.status(400).send({ code: 0 });
   } else res.status(400).send({ code: 0 });

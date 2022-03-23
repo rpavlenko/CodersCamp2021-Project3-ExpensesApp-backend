@@ -6,11 +6,11 @@ exports.authToken = (req, res, next) => {
 
   try {
     const secret = process.env.JWT_SECRET;
-    console.log({secret})
-    console.log({token})
+    console.log({ secret });
+    console.log({ token });
 
     const decoded = jwt.verify(token, secret);
-    console.log({decoded})
+    console.log({ decoded });
     req.user = decoded;
 
     next();
