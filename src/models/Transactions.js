@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const TransactionsSchema = mongoose.Schema({
-  // userID: {
-  //   type: mongoose.SchemaTypes.ObjectId,
-  //   required: true,
-  // },
+  userID: {
+    type: mongoose.SchemaTypes.ObjectId,
+    required: true,
+  },
   category: {
     type: String,
     required: true,

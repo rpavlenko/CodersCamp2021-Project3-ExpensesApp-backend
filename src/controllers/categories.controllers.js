@@ -2,8 +2,9 @@ const Categories = require('../models/Categories');
 const sendErrorResponse = require('../utils/helpers').sendErrorResponse;
 
 const getCategories = async (req, res) => {
-  console.log('get categories');
-  const categories = await Categories.find();
+  const userId = req.user;
+
+  const categories = await Categories.find({ userID: userId });
   if (!categories) {
     res.status(404).send('Not found');
   }
@@ -11,7 +12,6 @@ const getCategories = async (req, res) => {
 };
 
 const getCategory = async (req, res) => {
-  console.log('get category');
   const category = await Categories.findById(req.params.id);
   if (!category) {
     res.status(404).send('Not found');
