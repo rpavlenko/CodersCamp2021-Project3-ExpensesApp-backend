@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { authToken } = require('./middleware/auth');
+const { authToken } = require('../middleware/auth');
 
 router.use('/balance', authToken, require('./balance.router'));
 router.use('/categories', authToken, require('./categories.router'));
