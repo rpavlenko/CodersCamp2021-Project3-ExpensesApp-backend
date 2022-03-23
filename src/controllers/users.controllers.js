@@ -34,7 +34,7 @@ transporter.verify((err, success) => {
 });
 
 const verifyEmail = ({ _id, email }, res) => {
-  const url = 'http://localhost:3000/';
+  const url = proces.env.FRONT_URL;
 
   const mailOption = {
     from: process.env.AUTH_EMAIL,
@@ -155,13 +155,13 @@ const updatePassword = async (req, res) => {
   }
 
   if (!isCurrentPasswordCorrect && isSamePassword) {
-    res.status(400).send({ code: 0, msg: 'Enter correct password'});
+    res.status(400).send({ code: 0, msg: 'Enter correct password' });
   } else if (!isSamePassword) {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(req.body.newPassword, salt);
 
     await user.save();
-    res.status(200).send({ code: 1, msg: 'Password changed sucessfully.'});
+    res.status(200).send({ code: 1, msg: 'Password changed sucessfully.' });
   } else {
     res
       .status(400)
