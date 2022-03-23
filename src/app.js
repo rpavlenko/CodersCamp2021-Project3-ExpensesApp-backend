@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 
 mongoose.connect(process.env.DATABASE_URL, () =>
-  console.log('Connected to database'),
+  console.log(`Connected to database`),
 );
 const db = mongoose.connection;
 
