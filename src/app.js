@@ -1,11 +1,11 @@
 const dotenv = require('dotenv').config();
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
-const PORT = process.env.PORT || 3000;
-const CategoriesRouter = require('./routes/categories.router');
-const { authToken } = require('./middleware/auth');
 const cors = require('cors');
+const router = require('./routes');
+const { authToken } = require('./middleware/auth');
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 
@@ -18,18 +18,6 @@ db.on('error', (error) => console.error(error));
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('App is running');
-});
-
-const transactionsRouter = require('./routes/transactions.router');
-app.use('/api/v1/transactions', authToken, transactionsRouter);
-app.use('/api/v1/categories', authToken, CategoriesRouter);
-
-const usersRouter = require('./routes/users.router');
-app.use('/api/v1/users', usersRouter);
-
-const balanceRouter = require('./routes/balance.router');
-app.use('/api/v1/balance', balanceRouter);
+app.use(router);
 
 app.listen(PORT, () => console.log('Server started on port ' + PORT));

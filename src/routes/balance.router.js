@@ -1,5 +1,4 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const { getBalance } = require('../controllers/balance.controllers');
 
 router.get('/', getBalance);
