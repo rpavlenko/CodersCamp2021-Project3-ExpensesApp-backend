@@ -2,7 +2,7 @@ const Categories = require('../models/Categories');
 const sendErrorResponse = require('../utils/helpers').sendErrorResponse;
 
 const getCategories = async (req, res) => {
-  const userId = req.user;
+  const userId = req.user.id;
 
   const categories = await Categories.find({ userID: userId });
   if (!categories) {
