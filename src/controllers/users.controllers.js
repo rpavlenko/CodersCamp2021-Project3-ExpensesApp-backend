@@ -91,7 +91,7 @@ const registerUser = async (req, res) => {
 };
 
 const sendResetPasswordEmail = ({ _id, email }, res) => {
-  const url = 'http://localhost:3000/';
+  const url = process.env.FRONT_URL;
 
   const mailOption = {
     from: process.env.AUTH_EMAIL,
