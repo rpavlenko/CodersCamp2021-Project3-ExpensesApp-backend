@@ -35,7 +35,7 @@ transporter.verify((err, success) => {
 });
 
 const verifyEmail = ({ _id, email }, res) => {
-  const url = proces.env.FRONT_URL;
+  const url = process.env.FRONT_URL;
 
   const mailOption = {
     from: process.env.AUTH_EMAIL,
