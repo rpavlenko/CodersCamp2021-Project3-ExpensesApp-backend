@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const CategoriesSchema = mongoose.Schema({
-  user: {
+  userID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
@@ -13,6 +13,9 @@ const CategoriesSchema = mongoose.Schema({
   limit: {
     type: Number,
   },
+  color: {
+    type: String,
+  }
 });
 
 module.exports = mongoose.model('Categories', CategoriesSchema);
