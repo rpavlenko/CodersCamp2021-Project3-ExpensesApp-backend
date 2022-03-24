@@ -2,7 +2,7 @@ const Transactions = require('../models/Transactions');
 const sendErrorResponse = require('../utils/helpers').sendErrorResponse;
 
 const getBalance = async (req, res) => {
-  const userId = req.userId;
+  const userId = req.user.id;
   try {
     const transactions = await Transactions.find({ userID: userId });
 
