@@ -2,18 +2,19 @@ const mongoose = require('mongoose');
 
 const CategoriesSchema = mongoose.Schema({
   userID: {
-    type: mongoose.SchemaTypes.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   limit: {
-    type: Number
+    type: Number,
   },
   color: {
-    type: String
+    type: String,
   }
 });
 
